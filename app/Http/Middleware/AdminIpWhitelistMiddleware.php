@@ -10,6 +10,10 @@ class AdminIpWhitelistMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
+        if (app()->environment('local')) {
+            return $next($request);
+        }
+
         $allowedIps = config('admin.ip_whitelist', []);
 
         if (! empty($allowedIps) && ! in_array($request->ip(), $allowedIps, true)) {
@@ -19,4 +23,3 @@ class AdminIpWhitelistMiddleware
         return $next($request);
     }
 }
-
