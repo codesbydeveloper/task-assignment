@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "task-assignment-laravel-api",
+		"name": "Task Assignment - Laravel API",
+		"description": "REST API collection for the Laravel Task Assignment application.\n\n**Setup:**\n1. Set `base_url` (e.g. `http://localhost` or `http://task-assignment.test`).\n2. Use **Register** or **Login** to get a token.\n3. For authenticated requests, set the collection auth to Bearer Token and use `{{token}}`, or run **Login** and copy the token into the collection variable `token`.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Register a new user. Returns user + token. Use token in subsequent requests."
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('token', json.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"ChangeMe123!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login. Saves token to collection variable for other requests."
+					}
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						},
+						"description": "Get current authenticated user."
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						},
+						"description": "Revoke current access token."
+					}
+				}
+			],
+			"description": "Authentication endpoints (Sanctum token)."
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/profile", "host": ["{{base_url}}"], "path": ["api", "profile"]},
+						"description": "Get current user profile."
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json", "type": "text"},
+							{"key": "Content-Type", "value": "application/json", "type": "text"}
+						],
+						"body": {"mode": "raw", "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"newemail@example.com\",\n    \"password\": \"newpassword123\",\n    \"password_confirmation\": \"newpassword123\"\n}"},
+						"url": {"raw": "{{base_url}}/api/profile", "host": ["{{base_url}}"], "path": ["api", "profile"]},
+						"description": "Update current user profile. Omit password fields to keep current password."
+					}
+				}
+			],
+			"description": "Current user profile (any authenticated user)."
+		},
+		{
+			"name": "User (Admin)",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users?role=user",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"],
+							"query": [
+								{
+									"key": "role",
+									"value": "user",
+									"description": "Filter: admin | user"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Pagination"
+								}
+							]
+						},
+						"description": "Paginated user list. Admin only. Optional query: role, page."
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"role\": \"user\",\n    \"active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}"]
+						},
+						"description": "Update user by ID. Admin only. Set `user_id` in collection variables."
+					}
+				},
+				{
+					"name": "Activate User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}/activate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}", "activate"]
+						},
+						"description": "Set user active = true. Admin only."
+					}
+				},
+				{
+					"name": "Deactivate User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}/deactivate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "{{user_id}}", "deactivate"]
+						},
+						"description": "Set user active = false. Admin only."
+					}
+				}
+			],
+			"description": "User management. Requires admin role + Bearer token."
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "dashboard"]
+						},
+						"description": "Dashboard stats: total_users, active_users, total_transactions, daily_reports, queue_pending. Admin + IP whitelist."
+					}
+				},
+				{
+					"name": "Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/logs?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "logs"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Paginated cron/execution logs. Admin + IP whitelist."
+					}
+				},
+				{
+					"name": "Cron Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/cron-status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "cron-status"]
+						},
+						"description": "Last run time per scheduled command. Admin + IP whitelist."
+					}
+				},
+				{
+					"name": "Queue Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/queue-status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "queue-status"]
+						},
+						"description": "Pending and failed job counts. Admin + IP whitelist."
+					}
+				}
+			],
+			"description": "Admin-only endpoints. Requires admin role and IP in ADMIN_IP_WHITELIST."
+		},
+		{
+			"name": "System",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/system/health",
+							"host": ["{{base_url}}"],
+							"path": ["api", "system", "health"]
+						},
+						"description": "Health check: DB, Redis, queue_pending. Returns status + checks."
+					}
+				},
+				{
+					"name": "Version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/system/version",
+							"host": ["{{base_url}}"],
+							"path": ["api", "system", "version"]
+						},
+						"description": "App name, version, Laravel version."
+					}
+				},
+				{
+					"name": "Rate Limit",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/system/rate-limit",
+							"host": ["{{base_url}}"],
+							"path": ["api", "system", "rate-limit"]
+						},
+						"description": "Remaining requests and limit (60/min) for current IP."
+					}
+				}
+			],
+			"description": "System info and health. Requires valid Bearer token (any role)."
+		}
+	]
+}
