@@ -66,14 +66,6 @@ DB_USERNAME=root
 DB_PASSWORD=your_password
 ```
 
-Create the database (e.g. `laravel`) in MySQL before migrating.
-
-**Using SQLite (default):** ensure `database/database.sqlite` exists:
-
-```bash
-touch database/database.sqlite
-```
-
 ---
 
 ### 4. Database migration and seed
@@ -180,7 +172,3 @@ Change the admin password after first login (Profile or user management).
 - **Admin routes blocked:** Ensure your IP is in `ADMIN_IP_WHITELIST` in `.env` (default: `127.0.0.1,::1`).
 
 ---
-
-## License
-
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
