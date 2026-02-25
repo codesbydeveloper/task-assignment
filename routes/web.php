@@ -14,7 +14,12 @@ use App\Livewire\User\ProfileForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', LoginForm::class)->name('home');
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
+})->name('home');
 
 Route::post('/logout', function () {
     Auth::logout();
