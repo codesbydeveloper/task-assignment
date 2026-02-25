@@ -1,13 +1,14 @@
 <?php
 
+use App\Console\Kernel as ConsoleKernel;
 use App\Http\Middleware\AdminIpWhitelistMiddleware;
 use App\Http\Middleware\RoleMiddleware;
-use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-return Application::configure(basePath: dirname(__DIR__))
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
@@ -24,3 +25,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->create();
+
+// Use app Console Kernel (scheduler lives in app/Console/Kernel.php)
+$app->singleton(ConsoleKernelContract::class, ConsoleKernel::class);
+
+return $app;
