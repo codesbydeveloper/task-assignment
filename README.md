@@ -1,92 +1,186 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Assignment Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## Task Assignment Application
-
-Laravel 11 application with REST APIs, service layer, cron jobs, queues, and Admin/User UI.
-
-### UI Stack (Blade / Livewire / Inertia)
-
-This project uses **Blade + Livewire** for the UI (no Node.js required):
-
-- **Blade**: Layouts, email templates, static structure.
-- **Livewire**: Login, Register, User dashboard/profile/notifications/activity, Admin dashboard/user management/cron/queue/health.
-
-See [docs/UI-STACK.md](docs/UI-STACK.md) for details and optional Inertia (Vue/React) setup.
-
-### Quick start
-
-```bash
-cp .env.example .env && php artisan key:generate
-php artisan migrate --seed
-php artisan serve
-# Optional: php artisan queue:work database
-```
-
-Default admin: `admin@example.com` / `ChangeMe123!`
+Laravel 11 application with REST APIs, service layer, scheduled jobs, queues, and Admin/User UI (Blade + Livewire). No Node.js or npm required.
 
 ---
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP 8.2+** with extensions: `bcmath`, `ctype`, `curl`, `fileinfo`, `json`, `mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`
+- **Composer** ([getcomposer.org](https://getcomposer.org))
+- **SQLite** (default, no setup) or **MySQL** / **MariaDB**
+- Optional: **Redis** (for queue/cache/session in production)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## How to Run This Project (End to End)
 
-## Learning Laravel
+### 1. Get the code
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+# If using Git
+git clone <repository-url> task-assignment
+cd task-assignment
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Or extract the project ZIP and open a terminal in the project root.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+### 2. Install PHP dependencies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+Use `composer install --no-dev` for production.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+### 3. Environment file
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Code of Conduct
+Edit `.env` if needed:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Setting | Default | Notes |
+|--------|---------|--------|
+| `APP_NAME` | Laravel | Your app name |
+| `APP_URL` | http://localhost | Base URL (e.g. `http://localhost:8000`) |
+| `DB_CONNECTION` | sqlite | Use `mysql` for MySQL |
+| `QUEUE_CONNECTION` | database | Use `redis` if Redis is installed |
+| `SESSION_DRIVER` | database | Use `redis` with Redis |
+| `CACHE_STORE` | database | Use `redis` with Redis |
 
-## Security Vulnerabilities
+**Using MySQL instead of SQLite:** set in `.env`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+Create the database (e.g. `laravel`) in MySQL before migrating.
+
+**Using SQLite (default):** ensure `database/database.sqlite` exists:
+
+```bash
+touch database/database.sqlite
+```
+
+---
+
+### 4. Database migration and seed
+
+```bash
+php artisan migrate --seed
+```
+
+This runs all migrations and seeds the default admin user.
+
+---
+
+### 5. Run the application
+
+```bash
+php artisan serve
+```
+
+Open **http://localhost:8000** in your browser.
+
+- **Login (user):** register a new account or use any seeded user.
+- **Login (admin):** `admin@example.com` / `ChangeMe123!` (change in production.)
+
+---
+
+### 6. Optional: Queue worker (for jobs)
+
+If the app uses queues (notifications, reports, emails), run a worker in a **separate terminal**:
+
+```bash
+# Using database driver (default in .env)
+php artisan queue:work database -v
+
+# Or with Redis
+php artisan queue:work redis -v
+```
+
+Keep this running while testing features that dispatch jobs.
+
+---
+
+### 7. Optional: Scheduler (cron)
+
+For daily cleanup, report generation, health checks, etc., add a cron entry:
+
+```bash
+* * * * * cd /path/to/task-assignment && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Replace `/path/to/task-assignment` with your project path. On Windows, use Task Scheduler to run `php artisan schedule:run` every minute.
+
+---
+
+## Summary Checklist
+
+| Step | Command |
+|------|---------|
+| 1. Dependencies | `composer install` |
+| 2. Environment | `cp .env.example .env` then `php artisan key:generate` |
+| 3. SQLite file (if using SQLite) | `touch database/database.sqlite` |
+| 4. Database | `php artisan migrate --seed` |
+| 5. Run app | `php artisan serve` |
+| 6. (Optional) Queue | `php artisan queue:work database -v` |
+| 7. (Optional) Cron | `* * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1` |
+
+---
+
+## Default credentials
+
+| Role | Email | Password |
+|------|--------|----------|
+| Admin | admin@example.com | ChangeMe123! |
+
+Change the admin password after first login (Profile or user management).
+
+---
+
+## Tech stack
+
+- **Backend:** Laravel 11, Sanctum (API auth)
+- **UI:** Blade, Livewire, Tailwind (CDN) — no Node/npm
+- **Database:** SQLite (default) or MySQL
+- **Queue/Cache/Session:** Database driver by default; Redis optional
+- **API:** REST; Postman collection in `postman/` (see `postman/README.md`)
+
+---
+
+## Project structure (high level)
+
+- **`app/Services/`** — Business logic (User, Notification, Report, etc.)
+- **`app/Jobs/`** — Queued jobs (email, report, notification)
+- **`routes/web.php`** — Web routes (Blade/Livewire)
+- **`routes/api.php`** — API routes (Sanctum)
+- **`resources/views/livewire/`** — Livewire views (auth, user, admin)
+- **`config/admin.php`** — Admin IP whitelist (`ADMIN_IP_WHITELIST` in `.env`)
+
+---
+
+## Troubleshooting
+
+- **500 or “key not set”:** Run `php artisan key:generate`.
+- **Migration errors:** Check `DB_*` in `.env` and that the database exists (MySQL) or `database/database.sqlite` exists (SQLite).
+- **Class Redis not found:** Use `QUEUE_CONNECTION=database` and `CACHE_STORE=database` in `.env`, or install Redis and use `REDIS_CLIENT=predis` with the `predis/predis` package.
+- **Admin routes blocked:** Ensure your IP is in `ADMIN_IP_WHITELIST` in `.env` (default: `127.0.0.1,::1`).
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
