@@ -8,13 +8,12 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 
 class HealthCheckCommand extends Command
 {
     protected $signature = 'system:health-check';
 
-    protected $description = 'Check database, Redis, and queue health';
+    protected $description = 'Check database and queue health';
 
     public function handle(EmailService $emailService): int
     {
@@ -30,15 +29,6 @@ class HealthCheckCommand extends Command
             $status = 'failed';
             $message = 'Database connection failed.';
             $context['db'] = $e->getMessage();
-        }
-
-        try {
-            Redis::ping();
-            $context['redis'] = 'ok';
-        } catch (\Throwable $e) {
-            $status = 'failed';
-            $message = 'Redis connection failed.';
-            $context['redis'] = $e->getMessage();
         }
 
         try {
