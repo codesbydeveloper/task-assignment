@@ -11,7 +11,6 @@ class AdminIpWhitelistMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        dd($request->ip);
         if (app()->environment('local')) {
             return $next($request);
         }
