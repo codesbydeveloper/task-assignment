@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', NotificationsList::class)->name('notifications');
     Route::get('/activity', ActivityLog::class)->name('activity');
 
-    Route::middleware(['role:admin', 'admin.ip'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
         Route::get('/users', UsersTable::class)->name('users');
         Route::get('/cron-logs', CronLogViewer::class)->name('cron_logs');
