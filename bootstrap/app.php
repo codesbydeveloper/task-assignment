@@ -18,7 +18,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => RoleMiddleware::class,
-            'admin.ip' => AdminIpWhitelistMiddleware::class,
+            // 'admin.ip' => AdminIpWhitelistMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
