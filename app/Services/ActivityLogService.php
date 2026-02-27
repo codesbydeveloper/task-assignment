@@ -7,7 +7,7 @@ use App\Models\User;
 
 class ActivityLogService
 {
-    public function log(?User $user, string $action, array $meta = []): ActivityLog
+    public function log(?User $user, string $action, array $meta = [])
     {
         return ActivityLog::create([
             'user_id' => $user?->id,

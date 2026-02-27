@@ -1,14 +1,6 @@
 <div class="min-h-[70vh] flex items-center justify-center py-12">
     <div class="w-full max-w-md">
         <div class="card p-8 sm:p-10">
-            <div class="text-center mb-8">
-                <div class="w-14 h-14 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-600 mx-auto mb-4">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-                </div>
-                <h1 class="text-2xl font-bold text-slate-800">Welcome back</h1>
-                <p class="mt-2 text-slate-500 text-sm">Sign in to your account to continue</p>
-            </div>
-
             <form wire:submit.prevent="submit" class="space-y-6">
                 <div>
                     <label for="login-email" class="block text-sm font-semibold text-slate-700 mb-2">Email address</label>

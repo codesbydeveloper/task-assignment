@@ -13,7 +13,7 @@ class NotificationDispatchCommand extends Command
 
     protected $description = 'Dispatch pending notifications';
 
-    public function handle(NotificationService $notificationService): int
+    public function handle(NotificationService $notificationService)
     {
         $startedAt = now();
 

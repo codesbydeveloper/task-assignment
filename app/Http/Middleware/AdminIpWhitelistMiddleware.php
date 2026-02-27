@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminIpWhitelistMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
 
         if (app()->environment('local')) {

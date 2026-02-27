@@ -1,7 +1,6 @@
 <div class="space-y-6">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">Queue status</h1>
-        <p class="mt-1 text-slate-500">Pending and failed job counts.</p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

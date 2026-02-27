@@ -22,7 +22,6 @@ class TransactionService
                 'meta' => $data['meta'] ?? null,
             ]);
 
-            // Placeholder for additional business rules, external calls, etc.
 
             $transaction->status = 'completed';
             $transaction->save();

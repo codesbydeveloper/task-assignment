@@ -15,7 +15,7 @@ class HealthCheckCommand extends Command
 
     protected $description = 'Check database and queue health';
 
-    public function handle(EmailService $emailService): int
+    public function handle(EmailService $emailService)
     {
         $startedAt = now();
         $status = 'success';

@@ -20,7 +20,7 @@ class AuthController extends Controller
     ) {
     }
 
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request)
     {
         $user = $this->userService->createUser($request->validated());
 
@@ -30,21 +30,20 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user,
             'token' => $token,
-        ], 201);
+        ], 200);
     }
 
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
 
-        /** @var User|null $user */
         $user = User::where('email', $credentials['email'])->first();
 
-        if (! $user || ! Hash::check($credentials['password'], $user->password) || ! $user->active) {
+        if (!$user || !Hash::check($credentials['password'], $user->password) || !$user->active) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
         $this->activityLogService->log($user, 'auth.login_api');
 
@@ -54,12 +53,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me(Request $request): JsonResponse
+    public function me(Request $request)
     {
         return response()->json($request->user());
     }
 
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request)
     {
         $user = $request->user();
         $user?->currentAccessToken()?->delete();

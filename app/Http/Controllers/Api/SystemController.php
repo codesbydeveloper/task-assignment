@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class SystemController extends Controller
 {
-    public function health(HealthCheckService $healthCheck): JsonResponse
+    public function health(HealthCheckService $healthCheck)
     {
         return response()->json($healthCheck->run());
     }
 
-    public function version(): JsonResponse
+    public function version()
     {
         return response()->json([
             'app' => config('app.name'),
@@ -24,7 +24,7 @@ class SystemController extends Controller
         ]);
     }
 
-    public function rateLimit(Request $request): JsonResponse
+    public function rateLimit(Request $request)
     {
         $key = 'api:'.$request->ip();
         $max = 60;

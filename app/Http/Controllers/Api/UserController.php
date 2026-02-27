@@ -17,7 +17,7 @@ class UserController extends Controller
     {
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', User::class);
 
@@ -28,45 +28,33 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function update(UpdateUserRequest $request, int $id): JsonResponse
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
-
         Gate::authorize('update', $user);
 
-        $user = $this->userService->updateProfile($user, $request->validated());
-
-        return response()->json($user);
+        return response()->json($this->userService->updateProfile($user, $request->validated()));
     }
 
-    public function activate(Request $request, int $id): JsonResponse
+    public function activate(User $user)
     {
-        $user = User::findOrFail($id);
-
         Gate::authorize('activate', $user);
 
-        $user = $this->userService->activateUser($user);
-
-        return response()->json($user);
+        return response()->json($this->userService->activateUser($user));
     }
 
-    public function deactivate(Request $request, int $id): JsonResponse
+    public function deactivate(User $user)
     {
-        $user = User::findOrFail($id);
-
         Gate::authorize('deactivate', $user);
 
-        $user = $this->userService->deactivateUser($user);
-
-        return response()->json($user);
+        return response()->json($this->userService->deactivateUser($user));
     }
 
-    public function showProfile(Request $request): JsonResponse
+    public function showProfile(Request $request)
     {
         return response()->json($request->user());
     }
 
-    public function updateProfile(UpdateProfileRequest $request): JsonResponse
+    public function updateProfile(UpdateProfileRequest $request)
     {
         $user = $this->userService->updateProfile($request->user(), $request->validated());
 

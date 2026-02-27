@@ -13,7 +13,7 @@ class ReportGenerationCommand extends Command
 
     protected $description = 'Generate and dispatch daily system report';
 
-    public function handle(ReportService $reportService): int
+    public function handle(ReportService $reportService)
     {
         $startedAt = now();
 

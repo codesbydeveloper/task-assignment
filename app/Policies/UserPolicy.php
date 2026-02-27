@@ -6,27 +6,27 @@ use App\Models\User;
 
 class UserPolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
         return $user->isAdmin();
     }
 
-    public function view(User $user, User $model): bool
+    public function view(User $user, User $model)
     {
         return $user->isAdmin() || $user->id === $model->id;
     }
 
-    public function update(User $user, User $model): bool
+    public function update(User $user, User $model)
     {
         return $user->isAdmin() || $user->id === $model->id;
     }
 
-    public function activate(User $user, User $model): bool
+    public function activate(User $user, User $model)
     {
         return $user->isAdmin();
     }
 
-    public function deactivate(User $user, User $model): bool
+    public function deactivate(User $user, User $model)
     {
         return $user->isAdmin() && $user->id !== $model->id;
     }

@@ -22,11 +22,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })
     ->create();
 
-// Use app Console Kernel (scheduler lives in app/Console/Kernel.php)
 $app->singleton(ConsoleKernelContract::class, ConsoleKernel::class);
 
 return $app;

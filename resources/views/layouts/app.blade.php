@@ -1,4 +1,3 @@
-{{-- Professional UI – Blade + Livewire. Interview-ready. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -29,7 +28,6 @@
     </script>
     <style>
         [x-cloak]{display:none!important}
-        /* Explicit styles so .btn-primary and .input-field work with Tailwind CDN (no @apply) */
         .btn-primary {
             display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
             padding: 0.625rem 1rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600;
@@ -137,13 +135,6 @@
             @yield('content')
         </main>
 
-        {{-- Footer --}}
-        <footer class="mt-auto border-t border-slate-200/80 bg-white/50 py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-                <span>Made By Abhinav</span>
-                <span>Built with Laravel 11, Livewire & Tailwind</span>
-            </div>
-        </footer>
     </div>
 
     {{-- Loading toast --}}

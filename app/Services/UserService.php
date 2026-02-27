@@ -10,21 +10,16 @@ class UserService
 {
     public function __construct(
         private readonly ActivityLogService $activityLogService,
-    ) {
-    }
+    ) {}
 
-    public function createUser(array $data): User
+    public function createUser(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => $data['password'],
-                'role' => $data['role'] ?? 'user',
-                'active' => $data['active'] ?? true,
+            $user = User::create($data + [
+                'role'   => 'user',
+                'active' => true,
             ]);
 
-            Log::info('User created', ['user_id' => $user->id]);
             $this->activityLogService->log($user, 'user.created', [
                 'role' => $user->role,
             ]);
@@ -33,42 +28,35 @@ class UserService
         });
     }
 
-    public function updateProfile(User $user, array $data): User
+    public function updateProfile(User $user, array $data)
     {
-        $user->fill(collect($data)->only(['name', 'email'])->toArray());
+        $user->fill(array_intersect_key($data, array_flip(['name', 'email'])));
 
         if (!empty($data['password'])) {
             $user->password = $data['password'];
         }
-
         $user->save();
-
-        Log::info('User profile updated', ['user_id' => $user->id]);
         $this->activityLogService->log($user, 'user.profile_updated');
-
         return $user;
     }
 
-    public function activateUser(User $user): User
+    public function activateUser(User $user)
     {
         $user->active = true;
         $user->save();
 
-        Log::info('User activated', ['user_id' => $user->id]);
         $this->activityLogService->log($user, 'user.activated');
 
         return $user;
     }
 
-    public function deactivateUser(User $user): User
+    public function deactivateUser(User $user)
     {
         $user->active = false;
         $user->save();
 
-        Log::info('User deactivated', ['user_id' => $user->id]);
         $this->activityLogService->log($user, 'user.deactivated');
 
         return $user;
     }
 }
-

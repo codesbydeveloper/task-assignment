@@ -1,7 +1,6 @@
 <div class="space-y-6">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">Activity log</h1>
-        <p class="mt-1 text-slate-500">Your recent actions and events.</p>
     </div>
 
     <div class="card overflow-hidden p-0">

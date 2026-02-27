@@ -1,7 +1,6 @@
 <div class="space-y-6">
     <div>
         <h1 class="text-2xl font-bold text-slate-800">User management</h1>
-        <p class="mt-1 text-slate-500">List, search, and filter users with pagination.</p>
     </div>
 
     <div class="card overflow-hidden p-0">

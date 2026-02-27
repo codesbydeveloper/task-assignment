@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\CronLog;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class AdminApiController extends Controller
 {
-    public function dashboard(): JsonResponse
+    public function dashboard()
     {
         return response()->json([
             'total_users' => User::count(),
@@ -24,14 +23,14 @@ class AdminApiController extends Controller
         ]);
     }
 
-    public function logs(): JsonResponse
+    public function logs()
     {
         $logs = CronLog::latest()->paginate(50);
 
         return response()->json($logs);
     }
 
-    public function cronStatus(): JsonResponse
+    public function cronStatus()
     {
         $lastRuns = CronLog::query()
             ->select('command', DB::raw('MAX(created_at) as last_run'))
@@ -41,7 +40,7 @@ class AdminApiController extends Controller
         return response()->json(['last_runs' => $lastRuns]);
     }
 
-    public function queueStatus(): JsonResponse
+    public function queueStatus()
     {
         return response()->json([
             'jobs' => DB::table('jobs')->count(),

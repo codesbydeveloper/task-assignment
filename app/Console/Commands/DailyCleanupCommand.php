@@ -23,7 +23,7 @@ class DailyCleanupCommand extends Command
      */
     protected $description = 'Daily cleanup of expired tokens, logs, and temporary records';
 
-    public function handle(): int
+    public function handle()
     {
         $startedAt = now();
 
@@ -38,11 +38,9 @@ class DailyCleanupCommand extends Command
                     ->where('created_at', '<', now()->subDays(30))
                     ->delete();
 
-                // Hook for clearing other temporary records if needed.
             });
 
             $message = 'Daily cleanup completed successfully.';
-            Log::info($message);
 
             CronLog::create([
                 'command' => $this->signature,
