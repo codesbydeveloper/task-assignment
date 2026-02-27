@@ -4,23 +4,13 @@ Laravel 11 application with REST APIs, service layer, scheduled jobs, queues, an
 
 ---
 
-## Prerequisites
-
-- **PHP 8.2+** with extensions: `bcmath`, `ctype`, `curl`, `fileinfo`, `json`, `mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`
-- **Composer** ([getcomposer.org](https://getcomposer.org))
-- **SQLite** (default, no setup) or **MySQL** / **MariaDB**
-- Optional: **Redis** (for queue/cache/session in production)
-
----
 
 ## How to Run This Project (End to End)
 
 ### 1. Get the code
 
 ```bash
-# If using Git
 git clone <repository-url> task-assignment
-cd task-assignment
 ```
 
 Or extract the project ZIP and open a terminal in the project root.
@@ -91,22 +81,6 @@ Open **http://localhost:8000** in your browser.
 
 ---
 
-### 6. Optional: Queue worker (for jobs)
-
-If the app uses queues (notifications, reports, emails), run a worker in a **separate terminal**:
-
-```bash
-# Using database driver (default in .env)
-php artisan queue:work database -v
-
-# Or with Redis
-php artisan queue:work redis -v
-```
-
-Keep this running while testing features that dispatch jobs.
-
----
-
 ### 7. Optional: Scheduler (cron)
 
 For daily cleanup, report generation, health checks, etc., add a cron entry:
@@ -125,7 +99,6 @@ Replace `/path/to/task-assignment` with your project path. On Windows, use Task 
 |------|---------|
 | 1. Dependencies | `composer install` |
 | 2. Environment | `cp .env.example .env` then `php artisan key:generate` |
-| 3. SQLite file (if using SQLite) | `touch database/database.sqlite` |
 | 4. Database | `php artisan migrate --seed` |
 | 5. Run app | `php artisan serve` |
 | 6. (Optional) Queue | `php artisan queue:work database -v` |
