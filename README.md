@@ -99,10 +99,10 @@ Replace `/path/to/task-assignment` with your project path. On Windows, use Task 
 |------|---------|
 | 1. Dependencies | `composer install` |
 | 2. Environment | `cp .env.example .env` then `php artisan key:generate` |
-| 4. Database | `php artisan migrate --seed` |
-| 5. Run app | `php artisan serve` |
-| 6. (Optional) Queue | `php artisan queue:work database -v` |
-| 7. (Optional) Cron | `* * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1` |
+| 3. Database | `php artisan migrate --seed` |
+| 4. Run app | `php artisan serve` |
+| 5. (Optional) Queue | `php artisan queue:work database -v` |
+| 6. (Optional) Cron | `* * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1` |
 
 ---
 
@@ -135,13 +135,3 @@ Change the admin password after first login (Profile or user management).
 - **`resources/views/livewire/`** — Livewire views (auth, user, admin)
 - **`config/admin.php`** — Admin IP whitelist (`ADMIN_IP_WHITELIST` in `.env`)
 
----
-
-## Troubleshooting
-
-- **500 or “key not set”:** Run `php artisan key:generate`.
-- **Migration errors:** Check `DB_*` in `.env` and that the database exists (MySQL) or `database/database.sqlite` exists (SQLite).
-- **Class Redis not found:** Use `QUEUE_CONNECTION=database` and `CACHE_STORE=database` in `.env`, or install Redis and use `REDIS_CLIENT=predis` with the `predis/predis` package.
-- **Admin routes blocked:** Ensure your IP is in `ADMIN_IP_WHITELIST` in `.env` (default: `127.0.0.1,::1`).
-
----
